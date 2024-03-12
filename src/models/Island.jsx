@@ -15,9 +15,22 @@ import islandScene from '../assets/3d/island.glb';
 
 // remove receiveShadow and 
 
-const Island = (props) => {
+const Island = ({isRotating, setIsRotating, ...props}) => {
   const islandRef = useRef();
+
+  const {gl, viewport } = useThree();
   const { nodes, materials } = useGLTF(islandScene);
+
+  const lastX = useRef(0);
+  const rotatingSpeed = useRef(0);
+  const dampingFactor = 0.95; // affecting how fast the island and how does it continue to move afterwards
+
+  const handlePointerDown = (e) => {
+    e.stopProgation();
+    e.preventDefault();
+    setIsRotating(true);
+  }
+
   return (
     <a.group ref={islandRef} {...props}>
       <mesh
