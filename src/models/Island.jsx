@@ -15,7 +15,7 @@ import islandScene from '../assets/3d/island.glb';
 
 // remove receiveShadow and 
 
-const Island = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
+export function Island({isRotating, setIsRotating, setCurrentStage, ...props}) {
   const islandRef = useRef();
 
   const {gl, viewport } = useThree();
@@ -65,9 +65,11 @@ const Island = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
     if(e.key === 'ArrowLeft') {
       if(!isRotating) setIsRotating(true);
       islandRef.current.rotation.y += 0.01 * Math.PI;
+      rotationSpeed.current = 0.0125;
     } else if (e.key === 'ArrowRight') {
       if(!isRotating) setIsRotating(true);
       islandRef.current.rotation.y -= 0.01 * Math.PI;
+      rotationSpeed.current = -0.0125;
     }
   }
 
@@ -108,6 +110,7 @@ const Island = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
         ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
 
       // Set the current stage based on the island's orientation
+      // console.log(normalizedRotation);
       switch (true) {
         case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
           setCurrentStage(4);
@@ -121,8 +124,8 @@ const Island = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
         case normalizedRotation >= 4.25 && normalizedRotation <= 4.75:
           setCurrentStage(1);
           break;
-        default:
-          setCurrentStage(null);
+        // default:
+        //   setCurrentStage(null);
       }
     }
   })
@@ -177,5 +180,3 @@ const Island = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
     </a.group>
   );
 }
-
-export default Island;
